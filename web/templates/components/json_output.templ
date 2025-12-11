@@ -1,0 +1,26 @@
+package components
+
+templ JSONOutput(formatted string, isValid bool, errorMsg string) {
+	if !isValid {
+		<div class="error-output">
+			<div class="error-icon">⚠️</div>
+			<div class="error-content">
+				<h4>Invalid JSON</h4>
+				<pre class="error-message">{errorMsg}</pre>
+			</div>
+		</div>
+	} else {
+		<div class="success-output">
+			<div class="output-header">
+				<span class="success-badge">✓ Valid JSON</span>
+				<button 
+					onclick="navigator.clipboard.writeText(document.querySelector('#formatted-json').textContent)"
+					class="btn-copy"
+				>
+					Copy
+				</button>
+			</div>
+			<pre id="formatted-json" class="formatted-json"><code>{formatted}</code></pre>
+		</div>
+	}
+}

@@ -1,0 +1,71 @@
+package tools
+
+import (
+    "github.com/tmunongo/nanotools/web/templates"
+)
+
+templ JSONFormatterPage() {
+	@templates.Layout("JSON Formatter") {
+		<div class="tool-page">
+			<div class="tool-header">
+				<div class="tool-icon">📝</div>
+				<h2>JSON Formatter & Validator</h2>
+				<p class="tool-description">
+					Format, validate, and beautify your JSON. Instant feedback with syntax highlighting.
+				</p>
+			</div>
+			
+			<div class="tool-content">
+				<form 
+					hx-post="/api/tools/json-format"
+					hx-target="#json-output"
+					hx-trigger="input changed delay:500ms from:#json-input"
+					class="tool-form"
+				>
+					<div class="form-section">
+						<label for="json-input" class="form-label">
+							<span class="label-dot"></span>
+							Paste your JSON
+						</label>
+						<textarea 
+							id="json-input"
+							name="input"
+							class="json-textarea"
+							placeholder='{"message": "Paste JSON here..."}'
+							rows="12"
+						></textarea>
+					</div>
+					
+					<div class="form-section">
+						<label class="form-label">
+							<span class="label-dot"></span>
+							Formatting options
+						</label>
+						<div class="options-grid">
+							<label class="option-label">
+								<input type="number" name="indent" value="2" min="0" max="8" class="indent-input"/>
+								<span>Indent spaces</span>
+							</label>
+							<label class="option-label">
+								<input type="checkbox" name="sort_keys" class="checkbox"/>
+								<span>Sort keys alphabetically</span>
+							</label>
+						</div>
+					</div>
+					
+					<div class="form-actions">
+						<button type="submit" class="btn-primary">
+							Format JSON
+						</button>
+					</div>
+				</form>
+				
+				<div id="json-output" class="output-section">
+					<div class="empty-state">
+						<p>Formatted JSON will appear here</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}

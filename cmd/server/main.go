@@ -22,7 +22,7 @@ func main() {
 		dbPath = "./data/tinyutils.db"
 	}
 
-	database, _, err := db.InitDB(dbPath)
+	database, queries, err := db.InitDB(dbPath)
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
@@ -50,6 +50,10 @@ func main() {
 	r.Handle("/static/*", http.StripPrefix("/static", fileServer))
 
 	r.Get("/", handlers.HomeHandler)
+
+	r.Get("/tools/json-formatter", handlers.JSONFormatterHandler)
+
+	r.Post("/api/tools/json-format", handlers.JSONFormatAPIHandler(queries))
 
 	port := os.Getenv("PORT")
 	if port == "" {
