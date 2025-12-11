@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 
 	"github.com/tmunongo/nanotools/internal/handlers"
+	custommw "github.com/tmunongo/nanotools/internal/middleware"
 )
 
 func main() {
@@ -22,6 +23,13 @@ func main() {
 
 	r.Use(middleware.Timeout(60 * time.Second))
 
+	r.Use(custommw.SecureHeaders)
+
+	r.Use(custommw.MaxBytesMiddleware(50 * 1024 * 1024))
+
+	rateLimiter := custommw.NewRateLimiter(10.0, 20)
+	r.Use(rateLimiter.Middleware)
+
 	fileServer := http.FileServer(http.Dir("web/static"))
 	r.Handle("/static/*", http.StripPrefix("/static", fileServer))
 
@@ -33,7 +41,7 @@ func main() {
 	}
 
 	addr := fmt.Sprintf(":%s", port)
-	fmt.Printf("Starting TinyUtils on %s\n", addr)
+	fmt.Printf("Starting nanotools on %s\n", addr)
 	
 	if err := http.ListenAndServe(addr, r); err != nil {
 		fmt.Fprintf(os.Stderr, "Server failed to start: %v\n", err)
