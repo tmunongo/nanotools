@@ -1,0 +1,6 @@
+build-templ:
+	templ generate
+
+pre_commit:
+	go fmt ./...
+	go vet ./...
