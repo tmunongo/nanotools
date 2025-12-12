@@ -46,6 +46,7 @@ func main() {
 	rateLimiter := custommw.NewRateLimiter(10.0, 20)
 	r.Use(rateLimiter.Middleware)
 
+	// routes
 	fileServer := http.FileServer(http.Dir("web/static"))
 	r.Handle("/static/*", http.StripPrefix("/static", fileServer))
 
@@ -54,6 +55,10 @@ func main() {
 	r.Get("/tools/json-formatter", handlers.JSONFormatterHandler)
 
 	r.Post("/api/tools/json-format", handlers.JSONFormatAPIHandler(queries))
+
+	r.Get("/tools/base64", handlers.Base64PageHandler)
+	r.Post("/api/tools/base64/encode", handlers.Base64EncodeHandler(queries))
+	r.Post("/api/tools/base64/decode", handlers.Base64DecodeHandler(queries))
 
 	port := os.Getenv("PORT")
 	if port == "" {

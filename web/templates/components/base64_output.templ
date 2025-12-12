@@ -1,0 +1,18 @@
+package components
+
+templ Base64Output(output string, operation string) {
+	<div class="success-output">
+		<div class="output-header">
+			<span class="success-badge">✓ { operation } successful</span>
+			<button 
+				onclick="navigator.clipboard.writeText(document.querySelector('#base64-result').textContent)"
+				class="btn-copy"
+			>
+				Copy
+			</button>
+		</div>
+		<div class="output-result">
+			<pre id="base64-result"><code>{ output }</code></pre>
+		</div>
+	</div>
+}
