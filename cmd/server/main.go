@@ -60,6 +60,9 @@ func main() {
 	r.Post("/api/tools/base64/encode", handlers.Base64EncodeHandler(queries))
 	r.Post("/api/tools/base64/decode", handlers.Base64DecodeHandler(queries))
 
+	r.Get("/tools/uuid", handlers.UUIDPageHandler)
+	r.Get("/api/tools/uuid/generate", handlers.UUIDGenerateHandler(queries))
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"

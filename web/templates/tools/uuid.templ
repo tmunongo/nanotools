@@ -1,0 +1,105 @@
+package tools
+
+import (
+    "github.com/tmunongo/nanotools/web/templates"
+)
+
+templ UUIDPage() {
+	@templates.Layout("UUID Generator") {
+		<div class="tool-page" x-data="uuidGenerator()">
+			<div class="tool-header">
+				<div class="tool-icon">🎲</div>
+				<h2>UUID Generator</h2>
+				<p class="tool-description">
+					Generate random UUIDs (v4). Perfect for database IDs, session tokens, and unique identifiers.
+				</p>
+			</div>
+			
+			<div class="uuid-content">
+				<div class="uuid-controls">
+					<div class="control-group">
+						<label class="form-label">
+							<span class="label-dot"></span>
+							Number of UUIDs
+						</label>
+						<input 
+							type="number" 
+							x-model.number="count" 
+							min="1" 
+							max="100"
+							class="uuid-count-input"
+						/>
+					</div>
+					
+					<div class="control-group">
+						<label class="checkbox-label">
+							<input 
+								type="checkbox" 
+								x-model="uppercase"
+								class="checkbox"
+							/>
+							<span>Uppercase</span>
+						</label>
+						
+						<label class="checkbox-label">
+							<input 
+								type="checkbox" 
+								x-model="withHyphens"
+								class="checkbox"
+							/>
+							<span>Include hyphens</span>
+						</label>
+					</div>
+					
+					<button 
+						@click="generate"
+						class="btn-primary btn-lg"
+					>
+						<span>🎲</span>
+						<span>Generate UUIDs</span>
+					</button>
+				</div>
+				
+				<div class="uuid-output" x-show="uuids.length > 0" x-transition>
+					<div class="output-header">
+						<span class="success-badge">
+							✓ Generated <span x-text="uuids.length"></span> UUID<span x-text="uuids.length > 1 ? 's' : ''"></span>
+						</span>
+						<button @click="copyAll" class="btn-copy">
+							<span x-text="copied ? 'Copied!' : 'Copy All'"></span>
+						</button>
+					</div>
+					
+					<div class="uuid-list">
+						<template x-for="(uuid, index) in uuids" :key="index">
+							<div class="uuid-item">
+								<code x-text="uuid"></code>
+								<button 
+									@click="copySingle(uuid)"
+									class="btn-copy-single"
+									title="Copy this UUID"
+								>
+									📋
+								</button>
+							</div>
+						</template>
+					</div>
+				</div>
+				
+				<div class="uuid-info">
+					<div class="info-box info-box-info">
+						<div class="info-box-header">
+							<div class="info-box-icon">💡</div>
+							<h4 class="info-box-title">About UUIDs</h4>
+						</div>
+						<p>
+							UUID v4 uses random numbers and has virtually zero collision probability.
+							These are perfect for distributed systems where you need unique identifiers
+							without central coordination.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}
