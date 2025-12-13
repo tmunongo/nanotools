@@ -63,6 +63,9 @@ func main() {
 	r.Get("/tools/uuid", handlers.UUIDPageHandler)
 	r.Get("/api/tools/uuid/generate", handlers.UUIDGenerateHandler(queries))
 
+	r.Get("/tools/qr-code", handlers.QRCodePageHandler)
+	r.Post("/api/tools/qr/generate", handlers.QRCodeGenerateHandler(queries))
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"

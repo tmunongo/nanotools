@@ -7,9 +7,9 @@ import (
 func SecureHeaders(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		csp := "default-src 'self'; " +
-			"script-src 'self' https://unpkg.com 'unsafe-inline'; " +
+			"script-src 'self' https://unpkg.com 'unsafe-inline' 'unsafe-eval'; " +
 			"style-src 'self' 'unsafe-inline'; " +
-			"img-src 'self' data:; " +
+			"img-src 'self' data: blob:; " +
 			"font-src 'self'; " +
 			"connect-src 'self'"
 		w.Header().Set("Content-Security-Policy", csp)

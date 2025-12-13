@@ -42,7 +42,7 @@ func Layout(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " - nanotools</title><link rel=\"stylesheet\" href=\"/static/css/styles.css\"><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script><script defer src=\"https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js\"></script></head><body><div class=\"container\"><header class=\"site-header\"><div class=\"header-content\"><h1 class=\"site-title\"><a href=\"/\">TinyUtils</a></h1><p class=\"site-tagline\">Privacy-first web utilities</p></div></header><main class=\"main-content\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " - nanotools</title><link rel=\"stylesheet\" href=\"/static/css/styles.css\"><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script><script defer src=\"https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js\"></script></head><body><div class=\"container\"><header class=\"site-header\"><div class=\"header-content\"><h1 class=\"site-title\"><a href=\"/\">NanoTools</a></h1><p class=\"site-tagline\">Privacy-first web utilities</p></div></header><main class=\"main-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -50,7 +50,7 @@ func Layout(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</main><footer class=\"site-footer\"><p>All processing happens on your server. Your data stays private.</p></footer></div><script src=\"/static/js/uuid-generator.js\"></script></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</main><footer class=\"site-footer\"><p>All processing happens on your server. Your data stays private.</p></footer></div><script src=\"/static/js/uuid-generator.js\"></script><script src=\"/static/js/qr-generator.js\"></script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
