@@ -3,7 +3,7 @@ FROM golang:1.25-alpine AS build
 
 # install node and build tools
 # RUN apk update && apk add --no-cache nodejs make build-base && apk add --update npm
-RUN apk update && apk add ghostscript ffmpeg
+RUN apk update && apk add build-base ghostscript ffmpeg
 
 WORKDIR /app
 
