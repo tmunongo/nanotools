@@ -22,7 +22,7 @@ COPY . .
 
 # Build the Golang application
 RUN templ generate
-RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-extldflags=-static" -o /build ./cmd/server/main.go
+RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-extldflags=-static" -o ./build ./cmd/server/main.go
 
 # Start a new stage using a lightweight Alpine image
 # FROM gcr.io/distroless/static-debian11 AS run
