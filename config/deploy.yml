@@ -9,7 +9,7 @@ image: tmunongo/nanotools
 # Deploy to these servers.
 servers:
   web:
-    - 130.162.214.17
+    - 138.2.164.78
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -24,6 +24,10 @@ proxy:
   host: tools.webbe.dev
   # Proxy connects to your container on port 80 by default.
   app_port: 8080
+  healthcheck:
+    path: /health
+    interval: 2
+    timeout: 2
 
 # Credentials for your image host.
 registry:
@@ -40,7 +44,7 @@ registry:
 builder:
   arch: amd64
   local: false
-  remote: ssh://ubuntu@130.162.214.17
+  remote: ssh://ubuntu@138.2.164.78
   # Pass in additional build args needed for your Dockerfile.
   # args:
   #   RUBY_VERSION: <%= ENV["RBENV_VERSION"] || ENV["rvm_ruby_string"] || "#{RUBY_ENGINE}-#{RUBY_ENGINE_VERSION}" %>
