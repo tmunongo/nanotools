@@ -66,6 +66,12 @@ func main() {
 	r.Get("/tools/qr-code", handlers.QRCodePageHandler)
 	r.Post("/api/tools/qr/generate", handlers.QRCodeGenerateHandler(queries))
 
+	// Health check endpoint
+	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("OK"))
+	})
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
