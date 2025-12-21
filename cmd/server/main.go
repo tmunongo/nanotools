@@ -66,6 +66,9 @@ func main() {
 	r.Get("/tools/qr-code", handlers.QRCodePageHandler)
 	r.Post("/api/tools/qr/generate", handlers.QRCodeGenerateHandler(queries))
 
+	r.Get("/tools/slugify", handlers.SlugifyPageHandler)
+	r.Post("/api/tools/slugify", handlers.SlugifyAPIHandler(queries))
+
 	// Health check endpoint
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)

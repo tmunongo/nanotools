@@ -1702,3 +1702,93 @@ select {
     color: var(--text-secondary);
     margin: 0;
 }
+
+/* SLUGIFY */
+.slug-result-box {
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+}
+
+.slug-result {
+    font-family: 'Monaco', 'Menlo', 'Consolas', 'SF Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    word-break: break-all;
+}
+
+.slug-meta {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.slug-examples {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+}
+
+.slug-examples h4 {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.example-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.example-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+}
+
+.example-input {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.example-arrow {
+    color: var(--accent-primary);
+    font-weight: bold;
+}
+
+.example-output {
+    font-family: 'Monaco', 'Menlo', 'Consolas', 'SF Mono', monospace;
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
+.form-field {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.form-field label {
+    font-weight: normal;
+    margin-bottom: 0;
+}

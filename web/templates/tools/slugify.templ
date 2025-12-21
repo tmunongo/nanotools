@@ -1,0 +1,116 @@
+package tools
+
+import "strconv"
+import "github.com/tmunongo/nanotools/web/templates"
+
+templ SlugifyPage() {
+@templates.Layout("Slugify") {
+<div class="tool-page">
+    <div class="tool-header">
+        <div class="tool-icon">🔗</div>
+        <h2>Slugify Text</h2>
+        <p class="tool-description">
+            Convert text to URL-friendly slugs. Perfect for creating readable URLs, file names, and identifiers.
+        </p>
+    </div>
+
+    <div class="tool-content">
+        <div class="tool-form">
+            <form hx-post="/api/tools/slugify" hx-target="#slug-output"
+                hx-trigger="input changed delay:300ms from:#slug-input">
+                <div class="form-section">
+                    <label for="slug-input" class="form-label">
+                        <span class="label-dot"></span>
+                        Text to slugify
+                    </label>
+                    <textarea id="slug-input" name="input" class="json-textarea"
+                        placeholder="Enter text to convert to a slug..." rows="6"></textarea>
+                </div>
+
+                <div class="form-section">
+                    <label class="form-label">
+                        <span class="label-dot"></span>
+                        Options
+                    </label>
+                    <div class="options-grid">
+                        <label class="checkbox-label">
+                            <input type="radio" name="separator" value="-" checked class="checkbox" />
+                            <span>Hyphens (hello-world)</span>
+                        </label>
+
+                        <label class="checkbox-label">
+                            <input type="radio" name="separator" value="_" class="checkbox" />
+                            <span>Underscores (hello_world)</span>
+                        </label>
+
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="lowercase" checked class="checkbox" />
+                            <span>Force lowercase</span>
+                        </label>
+
+                        <div class="form-field">
+                            <label for="max-length">Max length:</label>
+                            <input type="number" id="max-length" name="max_length" value="80" min="10" max="200"
+                                class="indent-input" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary btn-full">
+                        Generate Slug
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="output-section">
+            <div id="slug-output">
+                <div class="empty-state">
+                    <p>Your slug will appear here</p>
+                </div>
+            </div>
+
+            <div class="slug-examples">
+                <h4>Example transformations:</h4>
+                <div class="example-list">
+                    <div class="example-item">
+                        <span class="example-input">"Hello, World!"</span>
+                        <span class="example-arrow">→</span>
+                        <code class="example-output">hello-world</code>
+                    </div>
+                    <div class="example-item">
+                        <span class="example-input">"Café au Lait"</span>
+                        <span class="example-arrow">→</span>
+                        <code class="example-output">cafe-au-lait</code>
+                    </div>
+                    <div class="example-item">
+                        <span class="example-input">"2024 Sales Report"</span>
+                        <span class="example-arrow">→</span>
+                        <code class="example-output">2024-sales-report</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+}
+
+templ SlugOutput(slugText string) {
+<div class="success-output">
+    <div class="output-header">
+        <span class="success-badge">✓ Slug generated</span>
+        <button onclick="navigator.clipboard.writeText(document.querySelector('#slug-result').textContent)"
+            class="btn-copy">
+            Copy
+        </button>
+    </div>
+    <div class="slug-result-box">
+        <code id="slug-result" class="slug-result">{ slugText }</code>
+    </div>
+    <div class="slug-meta">
+        <span class="meta-item">Length: { strconv.Itoa(len(slugText)) } characters</span>
+    </div>
+</div>
+}
