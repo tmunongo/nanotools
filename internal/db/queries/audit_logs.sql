@@ -33,3 +33,22 @@ SELECT
     SUM(output_size_bytes) as total_output_bytes
 FROM audit_logs
 WHERE tool_name = ?;
+
+-- Most downloaded platforms
+SELECT 
+    CASE 
+        WHEN tool_name LIKE '%youtube%' THEN 'YouTube'
+        ELSE 'Other'
+    END as platform,
+    COUNT(*) as downloads,
+    AVG(processing_time_ms) as avg_time
+FROM audit_logs
+WHERE tool_name = 'video_downloader'
+GROUP BY platform;
+
+-- Failed downloads
+SELECT error_message, COUNT(*) 
+FROM audit_logs
+WHERE tool_name = 'video_downloader' AND status = 'error'
+GROUP BY error_message
+ORDER BY COUNT(*) DESC;

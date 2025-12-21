@@ -50,7 +50,7 @@ func Layout(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</main><footer class=\"site-footer\"><p>All processing happens on your server. Your data stays private.</p></footer></div><script src=\"/static/js/uuid-generator.js\"></script><script src=\"/static/js/qr-generator.js\"></script><script src=\"/static/js/image-converter.js\"></script><script src=\"/static/js/video-downloader.js\"></script><script src=\"/static/js/theme.js\"></script></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</main><footer class=\"site-footer\"><p>All processing happens on your server. Your data stays private.</p></footer></div><script src=\"/static/js/uuid-generator.js\"></script><script src=\"/static/js/qr-generator.js\"></script><script src=\"/static/js/image-converter.js\"></script><script src=\"/static/js/video-downloader.js\"></script><script src=\"/static/js/pdf-converter.js\"></script><script src=\"/static/js/theme.js\"></script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

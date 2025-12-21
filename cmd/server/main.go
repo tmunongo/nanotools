@@ -78,6 +78,9 @@ func main() {
 	r.Post("/api/tools/video/info", handlers.VideoInfoHandler(queries))
 	r.With(videoDownloadLimiter.Middleware).Post("/api/tools/video/download", handlers.VideoDownloadHandler(queries))
 
+	r.Get("/tools/pdf-to-images", handlers.PDFConverterPageHandler)
+	r.Post("/api/tools/pdf/to-images", handlers.PDFToImagesHandler(queries))
+
 	// Health check endpoint
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
