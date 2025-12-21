@@ -1,0 +1,77 @@
+package templates
+
+import (
+    "strconv"
+)
+
+templ ErrorPage(code int, title string, message string) {
+	@Layout(title) {
+		<div class="error-page">
+			<div class="error-container">
+				<div class="error-code">{ strconv.Itoa(code) }</div>
+				<h1 class="error-title">{ title }</h1>
+				<p class="error-message">{ message }</p>
+				
+				<div class="error-actions">
+					<a href="/" class="btn-primary">Go Home</a>
+					<a href="javascript:history.back()" class="btn-secondary">Go Back</a>
+				</div>
+				
+				if code == 404 {
+					<div class="error-suggestions">
+						<h3>Looking for something?</h3>
+						<div class="tools-quick-links">
+							<a href="/tools/json-formatter">JSON Formatter</a>
+							<a href="/tools/base64">Base64</a>
+							<a href="/tools/uuid">UUID Generator</a>
+							<a href="/tools/slugify">Slugify</a>
+						</div>
+					</div>
+				}
+				
+				if code == 500 {
+					<div class="info-box info-box-error">
+						<div class="info-box-header">
+							<div class="info-box-icon">⚠️</div>
+							<h4 class="info-box-title">Something went wrong</h4>
+						</div>
+						<p>
+							Our team has been notified. If this problem persists, please
+							contact support or check our status page.
+						</p>
+					</div>
+				}
+			</div>
+		</div>
+	}
+}
+
+templ RateLimitError() {
+	@Layout("Rate Limit Exceeded") {
+		<div class="error-page">
+			<div class="error-container">
+				<div class="error-code">429</div>
+				<h1 class="error-title">Slow down there!</h1>
+				<p class="error-message">
+					You've exceeded the rate limit. Take a breather and try again in a moment.
+				</p>
+				
+				<div class="info-box info-box-warning">
+					<div class="info-box-header">
+						<div class="info-box-icon">⏱️</div>
+						<h4 class="info-box-title">Rate Limits</h4>
+					</div>
+					<p>
+						To keep our service fast for everyone, we limit requests to 10 per second
+						with a burst allowance of 20. Most users will never hit these limits during
+						normal use.
+					</p>
+				</div>
+				
+				<div class="error-actions">
+					<a href="/" class="btn-primary">Go Home</a>
+				</div>
+			</div>
+		</div>
+	}
+}

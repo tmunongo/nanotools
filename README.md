@@ -17,8 +17,10 @@ It's mostly a collection of tools that I often find myself looking up online, bu
 Privacy First: All processing happens on your server
 ✅ JSON Formatter: Validate and beautify JSON
 ✅ Text Utils: Base64, slugify, UUID, hashing
-[] Image Tools: Convert, compress, and process images
-[] PDF Tools: Convert PDFs to images
-[] Video Tools: Create GIFs from video clips
+✅ Image Tools: Convert, compress, and process images
+✅ PDF Tools: Convert PDFs to images
+🕐 Video Tools: 
+    [] Create GIFs from video clips
+    ✅ Download online videos
 ✅ QR code generation
-[] Easy deploy with Docker and kamal
+✅ Easy deploy with Docker and kamal

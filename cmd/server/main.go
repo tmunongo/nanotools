@@ -87,6 +87,8 @@ func main() {
 		w.Write([]byte("OK"))
 	})
 
+	r.NotFound(handlers.NotFoundHandler)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
