@@ -3,8 +3,7 @@ FROM golang:1.25-alpine AS build
 
 # install node and build tools
 RUN apk update && apk add --no-cache build-base ghostscript ffmpeg curl ca-certificates
-RUN apk add --no-cache python3 py3-pip && \
-    pip3 install yt-dlp && \
+RUN apk -U add yt-dlp && \
     rm -rf /var/cache/apk/*
 
 # install Deno so yt-dlp can use a JS runtime for extractors
