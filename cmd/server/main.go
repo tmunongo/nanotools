@@ -69,6 +69,9 @@ func main() {
 	r.Get("/tools/slugify", handlers.SlugifyPageHandler)
 	r.Post("/api/tools/slugify", handlers.SlugifyAPIHandler(queries))
 
+	r.Get("/tools/image-converter", handlers.ImageConverterPageHandler)
+	r.Post("/api/tools/image/convert", handlers.ImageConvertHandler(queries))
+
 	// Health check endpoint
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)

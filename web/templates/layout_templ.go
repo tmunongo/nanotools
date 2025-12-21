@@ -36,7 +36,7 @@ func Layout(title string) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/templates/layout.templ`, Line: 9, Col: 15}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/templates/layout.templ`, Line: 10, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -50,7 +50,7 @@ func Layout(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</main><footer class=\"site-footer\"><p>All processing happens on your server. Your data stays private.</p></footer></div><script src=\"/static/js/uuid-generator.js\"></script><script src=\"/static/js/qr-generator.js\"></script></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</main><footer class=\"site-footer\"><p>All processing happens on your server. Your data stays private.</p></footer></div><script src=\"/static/js/uuid-generator.js\"></script><script src=\"/static/js/qr-generator.js\"></script><script src=\"/static/js/image-converter.js\"></script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
