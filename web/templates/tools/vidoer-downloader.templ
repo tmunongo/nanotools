@@ -1,0 +1,212 @@
+package tools
+
+import "github.com/tmunongo/nanotools/web/templates"
+
+templ VideoDownloaderPage() {
+@templates.Layout("Video Downloader") {
+<div class="container" x-data="videoDownloader()">
+    <div class="tool-page">
+        <div class="tool-header">
+            <div class="tool-icon">📹</div>
+            <h2>Video Downloader</h2>
+            <p class="tool-description">
+                Download videos for offline viewing. Supports 1000+ websites including YouTube.
+            </p>
+        </div>
+
+        <!-- Ethical Use Notice -->
+        <div class="ethical-notice">
+            <h3>
+                <span>⚖️</span>
+                Important: Ethical & Legal Use
+            </h3>
+            <p style="margin-bottom: 1rem; color: #78350f;">
+                <strong>Please respect copyright and use this tool responsibly.</strong>
+            </p>
+            <ul class="ethical-list">
+                <li><strong>Educational Content:</strong> This tool is designed to help people in low-income countries
+                    with limited internet access download educational materials for offline learning.</li>
+                <li><strong>Respect Copyright:</strong> Do not download copyrighted content without permission. Only
+                    download videos you have the right to access.</li>
+                <li><strong>Creator-Owned Content:</strong> Use this to download your own videos or content you have
+                    permission to save.</li>
+                <li><strong>Creative Commons:</strong> Many educational videos are available under Creative Commons
+                    licenses that allow downloading.</li>
+                <li><strong>Fair Use:</strong> If you're an educator or researcher, ensure your use falls under fair use
+                    guidelines in your jurisdiction.</li>
+            </ul>
+            <p style="margin-top: 1rem; font-size: 0.875rem; color: #92400e;">
+                By using this tool, you agree to use it ethically and in compliance with local laws and YouTube's Terms
+                of Service.
+            </p>
+        </div>
+
+        <div class="tool-content">
+            <div class="tool-form">
+                <form @submit.prevent="getVideoInfo">
+                    <div class="form-section">
+                        <label class="form-label">
+                            <span class="label-dot"></span>
+                            Video URL
+                        </label>
+                        <div class="url-input-group">
+                            <input type="url" x-model="url" @input="checkPlatform"
+                                placeholder="https://youtube.com/watch?v=..." required class="form-input"
+                                style="padding-right: 150px;" />
+                            <div class="platform-badge" :class="{ 'show': isYouTube }">
+                                📺 YouTube Detected
+                            </div>
+                        </div>
+                        <p class="help-text">
+                            Supports YouTube, Vimeo, Twitter, Instagram, TikTok, and 1000+ other sites
+                        </p>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary btn-full" :disabled="loading">
+                            <span x-show="!loading">Get Video Info</span>
+                            <span x-show="loading" class="loading">
+                                <span class="spinner"></span>
+                                Loading...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+
+                <div x-show="error" class="error-message" x-text="error"></div>
+            </div>
+
+            <div class="output-section">
+                <!-- Video Preview -->
+                <div x-show="videoInfo" class="video-preview-card">
+                    <img :src="videoInfo?.thumbnail" alt="Video thumbnail" class="video-thumbnail" />
+
+                    <h3 x-text="videoInfo?.title" style="margin-bottom: 0.5rem;"></h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                        by <span x-text="videoInfo?.uploader"></span>
+                    </p>
+
+                    <div class="video-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value" x-text="formatDuration(videoInfo?.duration)"></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Estimated Size</div>
+                            <div class="meta-value" x-text="formatBytes(videoInfo?.filesize || 0)"></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Platform</div>
+                            <div class="meta-value" x-text="videoInfo?.is_youtube ? 'YouTube' : 'Other'"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quality Selection -->
+                    <div class="form-section" style="margin-top: 2rem;">
+                        <label class="form-label">
+                            <span class="label-dot"></span>
+                            Select Quality
+                        </label>
+                        <div class="quality-selector">
+                            <label class="quality-option">
+                                <input type="radio" name="quality" value="1080p" x-model="selectedQuality" />
+                                <div class="quality-card">
+                                    <span class="quality-name">1080p</span>
+                                    <span class="quality-desc">Full HD</span>
+                                </div>
+                            </label>
+                            <label class="quality-option">
+                                <input type="radio" name="quality" value="720p" x-model="selectedQuality" checked />
+                                <div class="quality-card">
+                                    <span class="quality-name">720p</span>
+                                    <span class="quality-desc">HD</span>
+                                </div>
+                            </label>
+                            <label class="quality-option">
+                                <input type="radio" name="quality" value="480p" x-model="selectedQuality" />
+                                <div class="quality-card">
+                                    <span class="quality-name">480p</span>
+                                    <span class="quality-desc">SD</span>
+                                </div>
+                            </label>
+                            <label class="quality-option">
+                                <input type="radio" name="quality" value="360p" x-model="selectedQuality" />
+                                <div class="quality-card">
+                                    <span class="quality-name">360p</span>
+                                    <span class="quality-desc">Low</span>
+                                </div>
+                            </label>
+                            <label class="quality-option">
+                                <input type="radio" name="quality" value="audio" x-model="selectedQuality" />
+                                <div class="quality-card">
+                                    <span class="quality-name">🎵</span>
+                                    <span class="quality-desc">Audio Only</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Download Button -->
+                    <button @click="downloadVideo" class="btn-primary btn-full" :disabled="downloading"
+                        style="margin-top: 2rem;">
+                        <span x-show="!downloading">Download Video</span>
+                        <span x-show="downloading" class="loading">
+                            <span class="spinner"></span>
+                            Downloading...
+                        </span>
+                    </button>
+
+                    <div x-show="downloading" class="progress-bar" style="margin-top: 1rem;">
+                        <div class="progress-fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div x-show="!videoInfo && !error" class="empty-state">
+                    <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <p>Enter a video URL to get started</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Supported Sites Info -->
+        <div class="info-box info-box-info" style="margin-top: 2rem;">
+            <div class="info-box-header">
+                <div class="info-box-icon">🌐</div>
+                <h4 class="info-box-title">Supported Platforms</h4>
+            </div>
+            <p style="margin-bottom: 1rem;">
+                This tool supports over 1000 websites including:
+            </p>
+            <div class="supported-sites">
+                <span class="site-badge">YouTube</span>
+                <span class="site-badge">Vimeo</span>
+                <span class="site-badge">Twitter/X</span>
+                <span class="site-badge">Instagram</span>
+                <span class="site-badge">TikTok</span>
+                <span class="site-badge">Facebook</span>
+                <span class="site-badge">Reddit</span>
+                <span class="site-badge">Twitch</span>
+                <span class="site-badge">DailyMotion</span>
+                <span class="site-badge">And 1000+ more</span>
+            </div>
+        </div>
+
+        <!-- Technical Requirements -->
+        <div class="info-box info-box-warning" style="margin-top: 2rem;">
+            <div class="info-box-header">
+                <div class="info-box-icon">⚙️</div>
+                <h4 class="info-box-title">Server Requirements</h4>
+            </div>
+            <p>
+                This tool requires <code>yt-dlp</code> to be installed on the server.
+                If you're self-hosting, install it with: <code>pip install yt-dlp</code>
+            </p>
+        </div>
+    </div>
+</div>
+}
+}

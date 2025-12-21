@@ -2,8 +2,15 @@
 FROM golang:1.25-alpine AS build
 
 # install node and build tools
-# RUN apk update && apk add --no-cache nodejs make build-base && apk add --update npm
-RUN apk update && apk add build-base ghostscript ffmpeg
+RUN apk update && apk add --no-cache build-base ghostscript ffmpeg curl ca-certificates
+RUN apk add --no-cache python3 py3-pip && \
+    pip3 install yt-dlp && \
+    rm -rf /var/cache/apk/*
+
+# install Deno so yt-dlp can use a JS runtime for extractors
+RUN curl -fsSL https://deno.land/x/install/install.sh | sh && \
+    mv /root/.deno/bin/deno /usr/local/bin/deno || true && \
+    rm -rf /root/.deno
 
 WORKDIR /app
 

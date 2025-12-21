@@ -9,3 +9,6 @@ data/*.db-wal
 .env.local
 .env.production
 .env
+
+# compiled templ files
+*_templ.go

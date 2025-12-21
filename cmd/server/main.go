@@ -46,6 +46,8 @@ func main() {
 	rateLimiter := custommw.NewRateLimiter(10.0, 20)
 	r.Use(rateLimiter.Middleware)
 
+	videoDownloadLimiter := custommw.NewRateLimiter(1.0, 3)
+
 	// routes
 	fileServer := http.FileServer(http.Dir("web/static"))
 	r.Handle("/static/*", http.StripPrefix("/static", fileServer))
@@ -71,6 +73,10 @@ func main() {
 
 	r.Get("/tools/image-converter", handlers.ImageConverterPageHandler)
 	r.Post("/api/tools/image/convert", handlers.ImageConvertHandler(queries))
+
+	r.Get("/tools/video-downloader", handlers.VideoDownloaderPageHandler)
+	r.Post("/api/tools/video/info", handlers.VideoInfoHandler(queries))
+	r.With(videoDownloadLimiter.Middleware).Post("/api/tools/video/download", handlers.VideoDownloadHandler(queries))
 
 	// Health check endpoint
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
