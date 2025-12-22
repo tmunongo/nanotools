@@ -8,6 +8,9 @@ templ Layout(title string) {
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>{title} - nanotools</title>
+	<meta name="description"
+		content="A collection of lightweight, privacy-focused web tools for developers and everyday users." />
+	<meta name="author" content="Tawanda Munongo" />
 	<link rel="stylesheet" href="/static/css/styles.css" />
 	<script src="https://unpkg.com/htmx.org@1.9.10"></script>
 	<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -30,44 +33,50 @@ templ Layout(title string) {
 						<a href="/" class="nav-link">Home</a>
 						<a href="/#tools" class="nav-link">Tools</a>
 						<a href="https://github.com/tmunongo/nanotools" target="_blank" class="nav-link">GitHub</a>
-						
+
 						<button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
 							<svg class="icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
 							</svg>
-							<svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+							<svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+								style="display: none;">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
 							</svg>
 						</button>
 					</div>
 
 					<!-- Mobile Menu Button -->
-					<button class="mobile-menu-btn hidden-desktop" @click="mobileMenuOpen = !mobileMenuOpen" aria-label="Toggle Menu">
+					<button class="mobile-menu-btn hidden-desktop" @click="mobileMenuOpen = !mobileMenuOpen"
+						aria-label="Toggle Menu">
 						<svg x-show="!mobileMenuOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M4 6h16M4 12h16M4 18h16" />
 						</svg>
-						<svg x-show="mobileMenuOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						<svg x-show="mobileMenuOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+							style="display: none;">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M6 18L18 6M6 6l12 12" />
 						</svg>
 					</button>
 				</div>
 
 				<!-- Mobile Menu -->
-				<div class="mobile-menu" x-show="mobileMenuOpen" 
-					 x-transition:enter="transition ease-out duration-200"
-					 x-transition:enter-start="opacity-0 -translate-y-2"
-					 x-transition:enter-end="opacity-100 translate-y-0"
-					 x-transition:leave="transition ease-in duration-150"
-					 x-transition:leave-start="opacity-100 translate-y-0"
-					 x-transition:leave-end="opacity-0 -translate-y-2"
-					 style="display: none;">
+				<div class="mobile-menu" x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-200"
+					x-transition:enter-start="opacity-0 -translate-y-2"
+					x-transition:enter-end="opacity-100 translate-y-0"
+					x-transition:leave="transition ease-in duration-150"
+					x-transition:leave-start="opacity-100 translate-y-0"
+					x-transition:leave-end="opacity-0 -translate-y-2" style="display: none;">
 					<a href="/" class="mobile-nav-link">Home</a>
 					<a href="/#tools" class="mobile-nav-link">Tools</a>
 					<a href="https://github.com/tmunongo/nanotools" target="_blank" class="mobile-nav-link">GitHub</a>
 					<button class="mobile-theme-btn" onclick="toggleTheme()">
 						<span>Toggle Theme</span>
 						<svg class="icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
 						</svg>
 					</button>
 				</div>

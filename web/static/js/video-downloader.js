@@ -64,13 +64,11 @@ function videoDownloader() {
                     throw new Error(errorText || 'Download failed');
                 }
 
-                // Get the blob and trigger download
                 const blob = await response.blob();
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
 
-                // Extract filename from Content-Disposition header
                 const disposition = response.headers.get('Content-Disposition');
                 let filename = 'video.mp4';
                 if (disposition) {

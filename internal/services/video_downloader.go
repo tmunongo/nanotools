@@ -22,8 +22,8 @@ type VideoDownloadOptions struct {
 	MaxDuration        int
 	MaxFileSize        int64
 	SubtitlesLang      string
-	CookiesPath        string // optional path to cookies file to pass to yt-dlp
-	CookiesFromBrowser string // optional browser name for --cookies-from-browser (e.g., chrome, firefox)
+	CookiesPath        string
+	CookiesFromBrowser string
 }
 
 type VideoInfo struct {
@@ -57,7 +57,7 @@ func GetVideoInfo(ctx context.Context, videoURL string, cookiesFromBrowser strin
 		return nil, fmt.Errorf("invalid URL: %s", videoURL)
 	}
 
-	isYouTube := isYouTubeURL(videoURL)
+	isYouTube := IsYouTubeURL(videoURL)
 
 	args := []string{
 		"--dump-json",
@@ -81,12 +81,15 @@ func GetVideoInfo(ctx context.Context, videoURL string, cookiesFromBrowser strin
 	}
 
 	// prefer explicit cookies file path, then cookies-from-browser, then env
-	if cookiesPath != "" {
-		args = append(args, "--cookies", cookiesPath)
-	} else if cookiesFromBrowser != "" {
-		args = append(args, "--cookies-from-browser", cookiesFromBrowser)
-	} else if cp := os.Getenv("YTDLP_COOKIES"); cp != "" {
-		args = append(args, "--cookies", cp)
+	// cookies only required for youtube
+	if isYouTube {
+		if cookiesPath != "" {
+			args = append(args, "--cookies", cookiesPath)
+		} else if cookiesFromBrowser != "" {
+			args = append(args, "--cookies-from-browser", cookiesFromBrowser)
+		} else if cp := os.Getenv("YTDLP_COOKIES"); cp != "" {
+			args = append(args, "--cookies", cp)
+		}
 	}
 
 	// put the URL back as last arg
@@ -142,15 +145,17 @@ func DownloadVideo(ctx context.Context, opts VideoDownloadOptions) (string, erro
 	}
 
 	// cookies: prefer CookiesFromBrowser, then CookiesPath, then env
-	if opts.CookiesFromBrowser != "" {
-		args = append(args, "--cookies-from-browser", opts.CookiesFromBrowser)
-	} else {
-		cookies := opts.CookiesPath
-		if cookies == "" {
-			cookies = os.Getenv("YTDLP_COOKIES")
-		}
-		if cookies != "" {
-			args = append(args, "--cookies", cookies)
+	if IsYouTubeURL(opts.URL) {
+		if opts.CookiesFromBrowser != "" {
+			args = append(args, "--cookies-from-browser", opts.CookiesFromBrowser)
+		} else {
+			cookies := opts.CookiesPath
+			if cookies == "" {
+				cookies = os.Getenv("YTDLP_COOKIES")
+			}
+			if cookies != "" {
+				args = append(args, "--cookies", cookies)
+			}
 		}
 	}
 
@@ -268,7 +273,7 @@ func isValidURL(str string) bool {
 	return err == nil && u.Scheme != "" && u.Host != ""
 }
 
-func isYouTubeURL(urlStr string) bool {
+func IsYouTubeURL(urlStr string) bool {
 	patterns := []string{
 		`^https?://(?:www\.)?youtube\.com/watch\?v=`,
 		`^https?://(?:www\.)?youtube\.com/embed/`,

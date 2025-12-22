@@ -7,10 +7,12 @@ It's mostly a collection of tools that I often find myself looking up online, bu
 ## stack
 
 - Go
-- Templ
 - chi
-- SQLite
 - sqlc
+- Templ
+- HTMX
+- Alpine.js
+- SQLite
 
 ## Features
 

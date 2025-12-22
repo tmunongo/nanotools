@@ -83,8 +83,8 @@ func VideoInfoHandler(queries *db.Queries) http.HandlerFunc {
 			return
 		}
 
-		// Temporarily disable YouTube support
-		if strings.Contains(strings.ToLower(videoURL), "youtube.com") || strings.Contains(strings.ToLower(videoURL), "youtu.be") {
+		// temporarily disable YouTube support
+		if services.IsYouTubeURL(videoURL) {
 			http.Error(w, "YouTube video info is temporarily disabled", http.StatusForbidden)
 			return
 		}
@@ -168,7 +168,7 @@ func VideoDownloadHandler(queries *db.Queries) http.HandlerFunc {
 		}
 
 		// Temporarily disable YouTube downloads
-		if strings.Contains(strings.ToLower(videoURL), "youtube.com") || strings.Contains(strings.ToLower(videoURL), "youtu.be") {
+		if services.IsYouTubeURL(videoURL) {
 			http.Error(w, "YouTube downloads are temporarily disabled", http.StatusForbidden)
 			return
 		}

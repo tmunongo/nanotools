@@ -1,95 +1,75 @@
 package tools
 
 import (
-    "github.com/tmunongo/nanotools/web/templates"
+"github.com/tmunongo/nanotools/web/templates"
 )
 
 templ Base64Page() {
-	@templates.Layout("Base64 Encoder/Decoder") {
-		<div class="tool-page">
-			<div class="tool-header">
-				<div class="tool-icon">🔐</div>
-				<h2>Base64 Encoder & Decoder</h2>
-				<p class="tool-description">
-					Convert between text and Base64 encoding. Perfect for data URIs, API tokens, and embedded content.
-				</p>
-			</div>
-			
-			<div class="tool-content">
-				<!-- Encoding Section -->
-				<div class="tool-form">
-					<h3 class="section-title">Encode to Base64</h3>
-					<form 
-						hx-post="/api/tools/base64/encode"
-						hx-target="#encode-output"
-						class="base64-form"
-					>
-						<div class="form-section">
-							<label for="encode-input" class="form-label">
-								<span class="label-dot"></span>
-								Text to encode
-							</label>
-							<textarea 
-								id="encode-input"
-								name="input"
-								class="json-textarea"
-								placeholder="Enter text to encode..."
-								rows="8"
-								required
-							></textarea>
-						</div>
-						
-						<div class="form-actions">
-							<button type="submit" class="btn-primary btn-full">
-								Encode to Base64
-							</button>
-						</div>
-					</form>
-					
-					<div id="encode-output" class="output-preview">
-						<div class="empty-state">
-							<p>Base64 output will appear here</p>
-						</div>
-					</div>
+@templates.Layout("Base64 Encoder/Decoder") {
+<div class="tool-page">
+	<div class="tool-header">
+		<div class="tool-icon">🔐</div>
+		<h2>Base64 Encoder & Decoder</h2>
+		<p class="tool-description">
+			Convert between text and Base64 encoding. Perfect for data URIs, API tokens, and embedded content.
+		</p>
+	</div>
+
+	<div class="tool-content">
+		<!-- Encoding Section -->
+		<div class="tool-form">
+			<h3 class="section-title">Encode to Base64</h3>
+			<form hx-post="/api/tools/base64/encode" hx-target="#encode-output" class="base64-form">
+				<div class="form-section">
+					<label for="encode-input" class="form-label">
+						<span class="label-dot"></span>
+						Text to encode
+					</label>
+					<textarea id="encode-input" name="input" class="json-textarea" placeholder="Enter text to encode..."
+						rows="8" required></textarea>
 				</div>
-				
-				<!-- Decoding Section -->
-				<div class="tool-form">
-					<h3 class="section-title">Decode from Base64</h3>
-					<form 
-						hx-post="/api/tools/base64/decode"
-						hx-target="#decode-output"
-						class="base64-form"
-					>
-						<div class="form-section">
-							<label for="decode-input" class="form-label">
-								<span class="label-dot"></span>
-								Base64 to decode
-							</label>
-							<textarea 
-								id="decode-input"
-								name="input"
-								class="json-textarea"
-								placeholder="Enter Base64 to decode..."
-								rows="8"
-								required
-							></textarea>
-						</div>
-						
-						<div class="form-actions">
-							<button type="submit" class="btn-primary btn-full">
-								Decode from Base64
-							</button>
-						</div>
-					</form>
-					
-					<div id="decode-output" class="output-preview">
-						<div class="empty-state">
-							<p>Decoded output will appear here</p>
-						</div>
-					</div>
+
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary btn-full">
+						Encode to Base64
+					</button>
+				</div>
+			</form>
+
+			<div id="encode-output" class="output-preview">
+				<div class="empty-state">
+					<p>Base64 output will appear here</p>
 				</div>
 			</div>
 		</div>
-	}
+
+		<!-- Decoding Section -->
+		<div class="tool-form">
+			<h3 class="section-title">Decode from Base64</h3>
+			<form hx-post="/api/tools/base64/decode" hx-target="#decode-output" class="base64-form">
+				<div class="form-section">
+					<label for="decode-input" class="form-label">
+						<span class="label-dot"></span>
+						Base64 to decode
+					</label>
+					<textarea id="decode-input" name="input" class="json-textarea"
+						placeholder="Enter Base64 to decode..." rows="8" required></textarea>
+				</div>
+
+				<div class="form-actions">
+					<button type="submit" class="btn-primary btn-full">
+						Decode from Base64
+					</button>
+				</div>
+			</form>
+
+			<div id="decode-output" class="output-preview">
+				<div class="empty-state">
+					<p>Decoded output will appear here</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+}
 }

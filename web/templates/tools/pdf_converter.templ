@@ -21,8 +21,7 @@ templ PDFConverterPage() {
                         <span class="label-dot"></span>
                         Upload PDF
                     </label>
-                    <input type="file" @change="handleFileSelect" accept=".pdf" required
-                        class="file-input" />
+                    <input type="file" @change="handleFileSelect" accept=".pdf" required class="file-input" />
                     <p class="help-text">Max size: 50MB</p>
                 </div>
 
@@ -73,22 +72,24 @@ templ PDFConverterPage() {
                         <span class="label-dot"></span>
                         Settings
                     </label>
-                    
+
                     <div class="settings-grid" style="display: grid; gap: 1rem; grid-template-columns: 1fr 1fr;">
-                         <div>
+                        <div>
                             <label class="sub-label">DPI (Resolution)</label>
-                            <input type="number" x-model.number="dpi" min="72" max="600" class="input-field" style="width: 100%; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 0.375rem;" />
+                            <input type="number" x-model.number="dpi" min="72" max="600" class="input-field"
+                                style="width: 100%; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 0.375rem;" />
                         </div>
-                        
+
                         <div x-show="outputFormat === 'jpeg' || outputFormat === 'webp'">
-                             <label class="sub-label">Quality (%)</label>
-                             <input type="number" x-model.number="quality" min="1" max="100" class="input-field" style="width: 100%; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 0.375rem;" />
+                            <label class="sub-label">Quality (%)</label>
+                            <input type="number" x-model.number="quality" min="1" max="100" class="input-field"
+                                style="width: 100%; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 0.375rem;" />
                         </div>
                     </div>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn-primary btn-full" :disabled="converting">
+                    <button type="submit" class="btn btn-primary btn-full" :disabled="converting">
                         <span x-show="!converting">Convert PDF</span>
                         <span x-show="converting" class="loading" style="display: none;">
                             <span class="spinner"></span>
@@ -115,15 +116,20 @@ templ PDFConverterPage() {
                     <span class="success-badge">✓ <span x-text="results.length"></span> pages converted</span>
                 </div>
 
-                <div class="images-grid" style="display: grid; gap: 1rem; max-height: 600px; overflow-y: auto; padding-right: 0.5rem;">
+                <div class="images-grid"
+                    style="display: grid; gap: 1rem; max-height: 600px; overflow-y: auto; padding-right: 0.5rem;">
                     <template x-for="img in results" :key="img.PageNumber">
-                        <div class="image-card" style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 0.5rem; background: white;">
-                            <div class="image-header" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem; color: #6b7280;">
+                        <div class="image-card"
+                            style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 0.5rem; background: white;">
+                            <div class="image-header"
+                                style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem; color: #6b7280;">
                                 <span x-text="'Page ' + img.PageNumber"></span>
                                 <span x-text="formatBytes(img.ImageData.length)"></span>
                             </div>
-                            <img :src="'data:image/' + img.Format + ';base64,' + img.ImageData" alt="Page preview" style="width: 100%; height: auto; border-radius: 0.25rem;" />
-                            <button @click="downloadImage(img)" class="btn-secondary btn-sm" style="width: 100%; margin-top: 0.5rem;">
+                            <img :src="'data:image/' + img.Format + ';base64,' + img.ImageData" alt="Page preview"
+                                style="width: 100%; height: auto; border-radius: 0.25rem;" />
+                            <button @click="downloadImage(img)" class="btn btn-secondary btn-sm"
+                                style="width: 100%; margin-top: 0.5rem;">
                                 Download
                             </button>
                         </div>

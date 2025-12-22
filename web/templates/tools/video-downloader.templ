@@ -63,7 +63,7 @@ templ VideoDownloaderPage() {
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn-primary btn-full" :disabled="loading">
+                        <button type="submit" class="btn btn-primary btn-full" :disabled="loading">
                             <span x-show="!loading">Get Video Info</span>
                             <span x-show="loading" class="loading">
                                 <span class="spinner"></span>
@@ -146,8 +146,7 @@ templ VideoDownloaderPage() {
                         </div>
                     </div>
 
-                    <!-- Download Button -->
-                    <button @click="downloadVideo" class="btn-primary btn-full" :disabled="downloading"
+                    <button @click="downloadVideo" class="btn btn-primary btn-full" :disabled="downloading"
                         style="margin-top: 2rem;">
                         <span x-show="!downloading">Download Video</span>
                         <span x-show="downloading" class="loading">
