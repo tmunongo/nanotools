@@ -12,3 +12,5 @@ data/*.db-wal
 
 # compiled templ files
 *_templ.go
+
+*.pdf

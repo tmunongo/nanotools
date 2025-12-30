@@ -81,6 +81,9 @@ func main() {
 	r.Get("/tools/pdf-to-images", handlers.PDFConverterPageHandler)
 	r.Post("/api/tools/pdf/to-images", handlers.PDFToImagesHandler(queries))
 
+	r.Get("/tools/pdf-joiner", handlers.PDFJoinerPageHandler)
+	r.Post("/api/tools/pdf/join", handlers.JoinPDFsHandler(queries))
+
 	// Health check endpoint
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
