@@ -14,3 +14,5 @@ data/*.db-wal
 *_templ.go
 
 *.pdf
+
+.DS_Store

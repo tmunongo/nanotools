@@ -1,0 +1,16 @@
+services:
+  nanotools:
+    image: ghcr.io/tmunongo/nanotools:latest
+    container_name: nanotools
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DATABASE_PATH=/app/data/tinyutils.db
+    volumes:
+      - nanotools_data:/app/data
+
+volumes:
+  nanotools_data:
+
