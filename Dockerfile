@@ -1,7 +1,7 @@
 # Start with a Golang and Node.js build image
 FROM golang:1.25-alpine AS build
 
-# install node and build tools
+# install build tools and runtime dependencies
 RUN apk update && apk add --no-cache build-base ghostscript ffmpeg curl ca-certificates
 RUN apk -U add yt-dlp && \
     rm -rf /var/cache/apk/*
@@ -17,17 +17,15 @@ WORKDIR /app
 COPY go.mod .
 COPY go.sum .
 
-# install templ globally
-RUN go install github.com/a-h/templ/cmd/templ@latest
-
 # Download the Go module dependencies
 RUN go mod download
 
-# Copy the entire application source code
+# Copy the entire application source code (including pre-generated *_templ.go files)
 COPY . .
 
 # Build the Golang application
-RUN templ generate
+# Note: templ generate is run in CI before this image is built, so *_templ.go
+# files are already present in the build context.
 RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-extldflags=-static" -o ./build ./cmd/server/main.go
 
 # Start a new stage using a lightweight Alpine image

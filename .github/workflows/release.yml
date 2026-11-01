@@ -26,6 +26,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Run templ generate on the CI runner so *_templ.go files are present in
+      # the Docker build context. This avoids running `go install` inside the
+      # Docker layer where network availability is less reliable.
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Install templ (pinned to go.mod version)
+        run: go install github.com/a-h/templ/cmd/templ@v0.3.960
+
+      - name: Generate templ templates
+        run: templ generate
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
