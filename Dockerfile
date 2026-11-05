@@ -20,12 +20,16 @@ COPY go.sum .
 # Download the Go module dependencies
 RUN go mod download
 
-# Copy the entire application source code (including pre-generated *_templ.go files)
+# Install templ CLI (pinned to version in go.mod)
+RUN go install github.com/a-h/templ/cmd/templ@v0.3.960
+
+# Copy the entire application source code
 COPY . .
 
+# Generate templ templates
+RUN templ generate
+
 # Build the Golang application
-# Note: templ generate is run in CI before this image is built, so *_templ.go
-# files are already present in the build context.
 RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-extldflags=-static" -o ./build ./cmd/server/main.go
 
 # Start a new stage using a lightweight Alpine image
