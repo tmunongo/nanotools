@@ -27,7 +27,7 @@ Privacy First: All processing happens on your server
 - ✅ JSON Formatter: Validate and beautify JSON
 - ✅ Text Utils: Base64, slugify, UUID, hashing
 - ✅ Image Tools: Convert, compress, and process images
-- ✅ PDF Tools: Convert PDFs to images, join PDFs
+- ✅ PDF Tools: Convert PDFs to images, join PDFs, unlock password-protected PDFs
 - 🕐 Video Tools: 
     - [] Create GIFs from video clips
     - ✅ Download online videos

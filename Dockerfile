@@ -2,7 +2,7 @@
 FROM golang:1.25-alpine AS build
 
 # install build tools and runtime dependencies
-RUN apk update && apk add --no-cache build-base ghostscript ffmpeg curl ca-certificates
+RUN apk update && apk add --no-cache build-base ghostscript ffmpeg curl ca-certificates qpdf
 RUN apk -U add yt-dlp && \
     rm -rf /var/cache/apk/*
 

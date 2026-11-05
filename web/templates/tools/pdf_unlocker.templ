@@ -1,0 +1,142 @@
+package tools
+
+import "github.com/tmunongo/nanotools/web/templates"
+
+templ PDFUnlockerPage() {
+@templates.Layout("PDF Unlocker") {
+<div class="tool-page" x-data="pdfUnlocker()">
+    <div class="tool-header">
+        <div class="tool-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 2.5rem; height: 2.5rem;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+        </div>
+        <h2>PDF Unlocker</h2>
+        <p class="tool-description">
+            Remove the password from a protected PDF. Your password is never stored or logged.
+        </p>
+    </div>
+
+    <div class="tool-content" style="max-width: 640px; margin: 0 auto;">
+        <!-- Instructions -->
+        <div class="tool-instructions" style="background: #f3f4f6; padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+            <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.1rem; color: #111827;">How to use</h3>
+            <ol style="margin: 0; padding-left: 1.5rem; color: #4b5563; line-height: 1.6;">
+                <li>Upload the password-protected PDF.</li>
+                <li>Enter the document password.</li>
+                <li>Click <strong>Unlock PDF</strong> — the unlocked file downloads instantly.</li>
+            </ol>
+        </div>
+
+        <div class="tool-form">
+            <form @submit.prevent="unlock" enctype="multipart/form-data">
+                <!-- File upload -->
+                <div class="form-section">
+                    <label class="form-label">
+                        <span class="label-dot"></span>
+                        Upload PDF
+                    </label>
+                    <input
+                        type="file"
+                        @change="handleFileSelect"
+                        accept=".pdf,application/pdf"
+                        class="file-input"
+                    />
+                    <p class="help-text">Maximum file size: 50 MB</p>
+                </div>
+
+                <!-- File info -->
+                <div class="form-section" x-show="file" style="display:none;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 1.25rem; height: 1.25rem; color: #6b7280; flex-shrink: 0;">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                        </svg>
+                        <div>
+                            <p class="file-name" x-text="fileName" style="font-weight: 500; margin: 0;"></p>
+                            <p class="file-size" x-text="fileSize" style="font-size: 0.75rem; color: #6b7280; margin: 0;"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-section">
+                    <label class="form-label" for="pdf-password">
+                        <span class="label-dot"></span>
+                        PDF Password
+                    </label>
+                    <div style="position: relative;">
+                        <input
+                            id="pdf-password"
+                            :type="showPassword ? 'text' : 'password'"
+                            x-model="password"
+                            class="form-input"
+                            placeholder="Enter the document password"
+                            autocomplete="off"
+                            style="width: 100%; padding-right: 3rem;"
+                        />
+                        <!-- Show / hide toggle -->
+                        <button
+                            type="button"
+                            @click="showPassword = !showPassword"
+                            style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6b7280; padding: 0;"
+                            :title="showPassword ? 'Hide password' : 'Show password'"
+                        >
+                            <!-- Eye icon (password hidden) -->
+                            <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 1.25rem; height: 1.25rem;">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <!-- Eye-slash icon (password visible) -->
+                            <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 1.25rem; height: 1.25rem; display: none;">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="help-text">Your password is sent only to your server and is never stored or logged.</p>
+                </div>
+
+                <div class="form-actions">
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-full"
+                        :disabled="unlocking || !file || !password"
+                    >
+                        <span x-show="!unlocking">Unlock PDF</span>
+                        <span x-show="unlocking" class="loading" style="display: none;">
+                            <span class="spinner"></span>
+                            Unlocking...
+                        </span>
+                    </button>
+                </div>
+            </form>
+
+            <div x-show="error" class="error-message" x-text="error" style="display: none;"></div>
+            <div x-show="success" class="success-message" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 1.25rem; height: 1.25rem; display: inline; vertical-align: middle; margin-right: 0.25rem;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                PDF unlocked and downloaded successfully.
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy notice -->
+    <div class="info-box info-box-info" style="max-width: 640px; margin: 2rem auto 0 auto;">
+        <div class="info-box-header">
+            <div class="info-box-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 1.5rem; height: 1.5rem;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                </svg>
+            </div>
+            <h4 class="info-box-title">Privacy Guarantee</h4>
+        </div>
+        <p>
+            Your PDF and password are processed entirely on your own server. The password is used only
+            to decrypt the file in memory and is <strong>never written to disk, logged, or sent to any third party</strong>.
+            Temporary files are deleted immediately after the unlocked PDF is sent to your browser.
+        </p>
+    </div>
+</div>
+}
+}
+

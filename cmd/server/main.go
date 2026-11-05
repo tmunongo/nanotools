@@ -84,6 +84,9 @@ func main() {
 	r.Get("/tools/pdf-joiner", handlers.PDFJoinerPageHandler)
 	r.Post("/api/tools/pdf/join", handlers.JoinPDFsHandler(queries))
 
+	r.Get("/tools/pdf-unlocker", handlers.PDFUnlockerPageHandler)
+	r.Post("/api/tools/pdf/unlock", handlers.UnlockPDFHandler(queries))
+
 	// Health check endpoint
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
