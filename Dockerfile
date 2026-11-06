@@ -1,5 +1,5 @@
 # Start with a Golang and Node.js build image
-FROM golang:1.25-alpine AS build
+FROM golang:1.26-alpine AS build
 
 # install build tools and runtime dependencies
 RUN apk update && apk add --no-cache build-base ghostscript ffmpeg curl ca-certificates qpdf
