@@ -1,21 +1,45 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	otellog "go.opentelemetry.io/otel/log"
+	sdklog "go.opentelemetry.io/otel/sdk/log"
 
 	"github.com/tmunongo/nanotools/internal/db"
 	"github.com/tmunongo/nanotools/internal/handlers"
 	custommw "github.com/tmunongo/nanotools/internal/middleware"
+	"github.com/tmunongo/nanotools/internal/telemetry"
 )
 
-func main() {
+func run() error {
+	ctx := context.Background()
+
+	// Initialize PostHog OpenTelemetry telemetry
+	provider, err := telemetry.SetupLogging(ctx)
+	if err != nil {
+		log.Printf("Warning: failed to initialize telemetry: %v", err)
+		provider = sdklog.NewLoggerProvider()
+		otel.SetLoggerProvider(provider)
+	}
+	defer func() {
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if err := provider.Shutdown(shutdownCtx); err != nil {
+			log.Printf("Failed to shut down telemetry provider: %v", err)
+		}
+	}()
+
 	// Initialize database
 	dbPath := os.Getenv("DATABASE_PATH")
 	if dbPath == "" {
@@ -24,7 +48,7 @@ func main() {
 
 	database, queries, err := db.InitDB(dbPath)
 	if err != nil {
-		log.Fatalf("Failed to initialize database: %v", err)
+		return fmt.Errorf("failed to initialize database: %w", err)
 	}
 	defer database.Close()
 
@@ -34,6 +58,11 @@ func main() {
 
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
+
+	// Block automated vulnerability & credentials scanners (.env, .git, .php, etc.)
+	// Placed before logging and template rendering to prevent log spam and resource waste.
+	r.Use(custommw.BlockBotScanners)
+
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
@@ -100,11 +129,26 @@ func main() {
 		port = "8080"
 	}
 
+	portNum, err := strconv.ParseInt(port, 10, 64)
+	if err != nil {
+		portNum = 8080
+	}
+
+	// Emit application startup log to PostHog OpenTelemetry logger using configured service name
+	telemetry.EmitLog(ctx, otellog.SeverityInfo, "Application started", attribute.Int64("server.port", portNum))
+
 	addr := fmt.Sprintf(":%s", port)
 	fmt.Printf("Starting nanotools on %s\n", addr)
 
 	if err := http.ListenAndServe(addr, r); err != nil {
-		fmt.Fprintf(os.Stderr, "Server failed to start: %v\n", err)
+		return fmt.Errorf("server failed to start: %w", err)
+	}
+	return nil
+}
+
+func main() {
+	if err := run(); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
 }

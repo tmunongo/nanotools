@@ -58,6 +58,8 @@ env:
     - PORT
     - DATABASE_PATH
     - SSH_KEY_LOCATION
+    - POSTHOG_TOKEN
+    - POSTHOG_URL
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal app logs -r job" will tail logs from the first server in the job section.
